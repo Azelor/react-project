@@ -5,7 +5,11 @@ import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
 
 class App extends Component {
-  state = {
+  constructor(props) {
+    super(props);
+    console.log('[App.js] Inside Constructor');
+    this.state = {
+
     persons: [
       { id: 'asfa1', name: 'Max', age: 28 },
       { id: 'vasdf1', name: 'Kaarel', age: 27 },
@@ -13,7 +17,39 @@ class App extends Component {
     ],
     otherState: 'some other value',
     showPersons: false
+    }
   }
+
+  componentWillMount() {
+    console.log('[App.js] Inside componentWillMount()');
+  }
+
+  componentDidMount() {
+    console.log('[App.js] Inside componentDidMount()');
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('[UPDATE App.js] Inside shouldComponentUpdate()');
+    return true;
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    console.log('[UPDATE App.js] Inside componentWillUpdate()');
+  }
+
+  componentDidUpdate() {
+    console.log('[UPDATE App.js] Inside componentDidUpdate()');
+  }
+
+  // state = {
+  //   persons: [
+  //     { id: 'asfa1', name: 'Max', age: 28 },
+  //     { id: 'vasdf1', name: 'Kaarel', age: 27 },
+  //     { id: 'asdf11', name: 'Jaanus', age: 24 }
+  //   ],
+  //   otherState: 'some other value',
+  //   showPersons: false
+  // }
 
   nameChangedHandler = ( event, id ) => {
     const personIndex = this.state.persons.findIndex( p => {
@@ -46,7 +82,19 @@ class App extends Component {
     this.setState( { showPersons: !doesShow } );
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('[UPDATE App.js] Inside shouldComponentUpdate()');
+    return nextState.persons !== this.state.persons ||
+    nextState.showPersons !== this.state.showPersons;
+    // return true;
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    console.log('[UPDATE App.js] Inside componentWillUpdate()');
+  }
+
   render () {
+    console.log('[App.js] Inside render()');
     let persons = null;
 
     if ( this.state.showPersons ) {
@@ -58,6 +106,7 @@ class App extends Component {
 
     return (
       <div className={classes.App}>
+        <button onClick={() => {this.setState({showPersons: true})}}>Show Persons</button>
         <Cockpit
           appTitle={this.props.title}
           showPersons={this.state.showPersons}
